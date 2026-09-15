@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TECVEXA</title>
+    <script>
+      (function() {
+        var origin = window.location.origin;
+        var pathname = window.location.pathname;
+        var search = window.location.search;
+        var hash = window.location.hash;
+
+        // If path points to admin (e.g. /TecVexa-company-/admin)
+        if (pathname.toLowerCase().endsWith('/admin') || pathname.toLowerCase().endsWith('/admin/')) {
+          var basePath = pathname.replace(/\/admin\/?$/i, '') || '';
+          window.location.replace(origin + basePath + '/' + '#admin');
+          return;
+        }
+
+        // For GitHub Pages subfolder repositories, find repository root
+        // Path format: /repo-name/some/path -> /repo-name/
+        var segments = pathname.split('/').filter(Boolean);
+        var repoBase = segments.length > 0 ? '/' + segments[0] + '/' : '/';
+        
+        // Redirect to repository root while preserving hash or query
+        window.location.replace(origin + repoBase + (hash || search || ''));
+      })();
+    </script>
+  </head>
+  <body style="margin:0; background:#020617; color:#fff; display:flex; align-items:center; justify-content:center; height:100vh; font-family:sans-serif;">
+    <p>جاري التوجيه إلى الموقع...</p>
+  </body>
+</html>
