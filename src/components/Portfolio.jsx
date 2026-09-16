@@ -72,18 +72,18 @@ export const Portfolio = () => {
         </div>
 
         {/* Filter Tabs & Search Bar */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 mb-8 sm:mb-10">
           
-          {/* Category Pill Filters */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-sm">
+          {/* Category Pill Filters (Scrollable on small devices) */}
+          <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-sm overflow-x-auto max-w-full">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setFilter(cat.id)}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+                className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${
                   filter === cat.id
                     ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300 dark:hover:bg-slate-800'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/60 dark:hover:bg-slate-800'
                 }`}
               >
                 {cat.label}
@@ -99,7 +99,7 @@ export const Portfolio = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={isRtl ? "بحث في المشاريع والتقنيات..." : "Search projects or tech..."}
-              className={`w-full py-2 px-4 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-white text-xs sm:text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 shadow-sm ${
+              className={`w-full py-2.5 px-4 rounded-xl bg-white dark:bg-slate-900/90 border border-slate-300 dark:border-slate-700/80 text-slate-900 dark:text-white text-xs sm:text-sm placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 shadow-sm ${
                 isRtl ? 'pr-10' : 'pl-10'
               }`}
             />
@@ -229,10 +229,10 @@ export const Portfolio = () => {
       {/* Project Details Modal */}
       {selectedProject && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/80 backdrop-blur-xl animate-fade-in">
-          <div className="relative w-full max-w-3xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+          <div className="relative w-full max-w-3xl rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden max-h-[92vh] sm:max-h-[90vh] flex flex-col">
             
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80">
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80">
               <div className="flex items-center gap-2">
                 <span className="text-xs uppercase font-bold px-2.5 py-1 rounded-md bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30">
                   {selectedProject.category}
@@ -244,15 +244,16 @@ export const Portfolio = () => {
               <button
                 onClick={() => setSelectedProject(null)}
                 className="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-all"
+                aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 sm:p-8 overflow-y-auto space-y-6">
+            <div className="p-5 sm:p-8 overflow-y-auto space-y-5 sm:space-y-6">
               
-              <div className="h-56 sm:h-64 rounded-2xl overflow-hidden relative">
+              <div className="h-44 sm:h-64 rounded-2xl overflow-hidden relative">
                 <img
                   src={selectedProject.image_url}
                   alt="Project Preview"
@@ -262,17 +263,17 @@ export const Portfolio = () => {
               </div>
 
               <div>
-                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+                <h3 className="text-xl sm:text-3xl font-black text-slate-900 dark:text-white">
                   {lang === 'ar' ? selectedProject.title_ar : selectedProject.title_en}
                 </h3>
-                <p className="mt-3 text-slate-700 dark:text-slate-300 text-sm sm:text-base leading-relaxed">
+                <p className="mt-2.5 sm:mt-3 text-slate-700 dark:text-slate-300 text-xs sm:text-base leading-relaxed">
                   {lang === 'ar' ? selectedProject.description_ar : selectedProject.description_en}
                 </p>
               </div>
 
               {/* Highlights */}
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-3">
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white mb-2.5 sm:mb-3">
                   {t.portfolio.keyHighlights}
                 </h4>
                 <div className="space-y-2">
@@ -287,14 +288,14 @@ export const Portfolio = () => {
 
               {/* Tech Stack */}
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white mb-3">
+                <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white mb-2.5 sm:mb-3">
                   {t.portfolio.techStackBadge}
                 </h4>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {(selectedProject.tech_stack || []).map((tItem, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-cyan-700 dark:text-cyan-300 border border-slate-200 dark:border-slate-700"
+                      className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-cyan-700 dark:text-cyan-300 border border-slate-200 dark:border-slate-700"
                     >
                       {tItem}
                     </span>
@@ -305,14 +306,14 @@ export const Portfolio = () => {
             </div>
 
             {/* Modal Footer Links */}
-            <div className="p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
+            <div className="p-4 sm:p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 {selectedProject.live_url && (
                   <a
                     href={selectedProject.live_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400 transition-all shadow-md"
+                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-cyan-500 text-slate-950 hover:bg-cyan-400 transition-all shadow-md active:scale-95"
                   >
                     <ExternalLink className="w-4 h-4" />
                     <span>{t.portfolio.viewLiveDemo}</span>
@@ -324,7 +325,7 @@ export const Portfolio = () => {
                     href={selectedProject.repo_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 text-white hover:bg-slate-700 border border-slate-700 transition-all"
+                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800 text-white hover:bg-slate-700 border border-slate-700 transition-all active:scale-95"
                   >
                     <GithubIcon className="w-4 h-4" />
                     <span>{t.portfolio.viewSourceCode}</span>

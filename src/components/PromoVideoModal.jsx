@@ -243,7 +243,7 @@ export const PromoVideoModal = ({ isOpen, onClose }) => {
         </div>
 
         {/* Video Canvas Showcase Screen */}
-        <div className="relative flex-1 min-h-[380px] sm:min-h-[440px] bg-slate-950 overflow-hidden flex flex-col justify-between p-6 sm:p-10">
+        <div className="relative flex-1 min-h-[320px] sm:min-h-[440px] bg-slate-950 overflow-y-auto sm:overflow-hidden flex flex-col justify-between p-4 sm:p-8 lg:p-10">
           
           {/* Animated Background Mesh & Particles */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.18),rgba(255,255,255,0))] pointer-events-none"></div>
@@ -251,45 +251,45 @@ export const PromoVideoModal = ({ isOpen, onClose }) => {
           <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
 
           {/* Scene Header & Badge */}
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-3">
+          <div className="relative z-10 flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 mb-2 sm:mb-0">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-slate-800/90 border border-slate-700 text-cyan-300">
               <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
               <span>{isRtl ? current.badge : current.badgeEn}</span>
             </div>
             
-            <div className="flex items-center gap-2 px-3 py-1 rounded-md bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold">
+            <div className="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-md bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold">
               <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
               <span>4K PROMO REEL • مصري</span>
             </div>
           </div>
 
           {/* Dynamic Interactive Stage per Scene */}
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center my-auto py-2">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center my-auto py-2">
             
             {/* Left Narrative Content */}
-            <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex p-3 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-xl">
-                <CurrentIcon className="w-8 h-8 text-cyan-400" />
+            <div className="lg:col-span-7 space-y-3 sm:space-y-4">
+              <div className="inline-flex p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-xl">
+                <CurrentIcon className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-400" />
               </div>
 
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
+              <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
                 {isRtl ? current.titleAr : current.titleEn}
               </h2>
 
-              <p className="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed">
+              <p className="text-xs sm:text-base text-slate-300 max-w-xl leading-relaxed">
                 {isRtl ? current.descAr : current.descEn}
               </p>
 
               {/* Egyptian Arabic Dialect Speech Bubble / Subtitle */}
-              <div className="p-4 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 shadow-xl flex items-start gap-3">
-                <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
-                  <Mic className="w-4 h-4" />
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 shadow-xl flex items-start gap-2.5 sm:gap-3">
+                <div className="p-1.5 sm:p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
+                  <Mic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
                 <div>
-                  <span className="text-[11px] font-bold text-emerald-400 uppercase block mb-1">
+                  <span className="text-[10px] sm:text-[11px] font-bold text-emerald-400 uppercase block mb-1">
                     🎙️ التعليق الصوتي المصري المسموع:
                   </span>
-                  <p className="text-sm font-semibold text-white leading-relaxed">
+                  <p className="text-xs sm:text-sm font-semibold text-white leading-relaxed">
                     "{current.egyptianVoiceScript}"
                   </p>
                 </div>
@@ -297,7 +297,7 @@ export const PromoVideoModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Right Screen: Animated Code / Visualizer */}
-            <div className="lg:col-span-5">
+            <div className="lg:col-span-5 hidden sm:block">
               <div className="rounded-2xl bg-slate-950/90 border border-slate-800 shadow-2xl p-4 overflow-hidden relative">
                 
                 <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80">

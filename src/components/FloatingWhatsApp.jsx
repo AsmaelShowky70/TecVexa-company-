@@ -16,7 +16,7 @@ export const FloatingWhatsApp = () => {
   };
 
   return (
-    <div className={`fixed bottom-6 z-40 flex items-center gap-3 ${isRtl ? 'left-6 flex-row' : 'right-6 flex-row-reverse'}`}>
+    <div className={`fixed bottom-4 sm:bottom-6 z-40 flex items-center gap-2.5 sm:gap-3 ${isRtl ? 'left-4 sm:left-6 flex-row' : 'right-4 sm:right-6 flex-row-reverse'}`}>
       
       {/* Tooltip Pill */}
       {showTooltip && (
@@ -38,11 +38,11 @@ export const FloatingWhatsApp = () => {
       {/* Floating Pulse Button */}
       <button
         onClick={handleClick}
-        className="relative group p-4 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-2xl shadow-emerald-500/40 hover:scale-110 active:scale-95 transition-all duration-300"
+        className="relative group p-3.5 sm:p-4 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-2xl shadow-emerald-500/40 hover:scale-110 active:scale-95 transition-all duration-300"
         title="WhatsApp Direct Contact"
       >
         <span className="absolute inset-0 rounded-full bg-emerald-400 opacity-75 animate-ping -z-10"></span>
-        <MessageCircle className="w-7 h-7" />
+        <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
       </button>
 
     </div>
