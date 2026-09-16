@@ -171,7 +171,7 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                     {lang === 'ar' ? pkg.name_ar : pkg.name_en}
                   </h3>
 
-                  <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 min-h-[44px] leading-relaxed">
+                  <p className="mt-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium min-h-[44px] leading-relaxed">
                     {lang === 'ar' ? pkg.description_ar : pkg.description_en}
                   </p>
 
@@ -181,43 +181,43 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                       <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
                         {pkg.price_egp.toLocaleString()}
                       </span>
-                      <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
+                      <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
                         {t.pricing.currency}
                       </span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
                         (~${pkg.price_usd})
                       </span>
                     </div>
                   </div>
 
                   {/* Highlights Grid (Domain, Host, DB, Dashboard) */}
-                  <div className="mt-5 space-y-2.5 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/80 text-xs">
-                    <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                  <div className="mt-5 space-y-2.5 p-3.5 rounded-2xl bg-slate-100/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs">
+                    <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200">
                       <Globe className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0" />
-                      <span className="font-semibold text-slate-900 dark:text-white">
+                      <span className="font-bold text-slate-900 dark:text-white">
                         {t.pricing.domainIncluded}
                       </span>
-                      <span className="text-slate-600 dark:text-slate-300 truncate">
+                      <span className="text-slate-700 dark:text-slate-300 font-medium truncate">
                         {lang === 'ar' ? pkg.domain_included_ar : pkg.domain_included_en}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                    <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200">
                       <Server className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      <span className="font-semibold text-slate-900 dark:text-white">
+                      <span className="font-bold text-slate-900 dark:text-white">
                         {t.pricing.hostingIncluded}
                       </span>
-                      <span className="text-slate-600 dark:text-slate-300 truncate">
+                      <span className="text-slate-700 dark:text-slate-300 font-medium truncate">
                         {lang === 'ar' ? pkg.hosting_included_ar : pkg.hosting_included_en}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                    <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200">
                       <Database className="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
-                      <span className="font-semibold text-slate-900 dark:text-white">
+                      <span className="font-bold text-slate-900 dark:text-white">
                         {t.pricing.databaseIncluded}
                       </span>
-                      <span className="text-slate-600 dark:text-slate-300 truncate">
+                      <span className="text-slate-700 dark:text-slate-300 font-medium truncate">
                         {lang === 'ar' ? pkg.database_included_ar : pkg.database_included_en}
                       </span>
                     </div>
@@ -231,7 +231,7 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   {/* Feature Checklist */}
                   <ul className="mt-6 space-y-3">
                     {(lang === 'ar' ? pkg.features_ar : pkg.features_en).map((feat, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium">
                         <Check className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
@@ -282,7 +282,7 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                     {lang === 'ar' ? pkg.name_ar : pkg.name_en}
                   </h3>
 
-                  <p className="mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed min-h-[44px]">
+                  <p className="mt-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed min-h-[44px]">
                     {lang === 'ar' ? pkg.description_ar : pkg.description_en}
                   </p>
 
@@ -290,31 +290,31 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                     <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
                       {pkg.price_egp.toLocaleString()}
                     </span>
-                    <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
+                    <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
                       {t.pricing.currency}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
                       (~${pkg.price_usd})
                     </span>
                   </div>
 
                   {/* Key Highlights */}
-                  <div className="mt-5 space-y-2 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800/80 text-xs">
-                    <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                  <div className="mt-5 space-y-2.5 p-3.5 rounded-2xl bg-slate-100/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs">
+                    <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200">
                       <Smartphone className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      <span className="font-semibold text-slate-900 dark:text-white">{isRtl ? "نظام الموبايل:" : "Mobile System:"}</span>
-                      <span className="text-slate-600 dark:text-slate-300">{isRtl ? "تطبيق أندرويد متكامل" : "Full Android Mobile App"}</span>
+                      <span className="font-bold text-slate-900 dark:text-white">{isRtl ? "نظام الموبايل:" : "Mobile System:"}</span>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium">{isRtl ? "تطبيق أندرويد متكامل" : "Full Android Mobile App"}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                    <div className="flex items-center gap-2 text-slate-800 dark:text-slate-200">
                       <Database className="w-4 h-4 text-cyan-600 dark:text-cyan-400 shrink-0" />
-                      <span className="font-semibold text-slate-900 dark:text-white">{isRtl ? "قاعدة البيانات:" : "Database:"}</span>
-                      <span className="text-slate-600 dark:text-slate-300">{lang === 'ar' ? pkg.database_included_ar : pkg.database_included_en}</span>
+                      <span className="font-bold text-slate-900 dark:text-white">{isRtl ? "قاعدة البيانات:" : "Database:"}</span>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium">{lang === 'ar' ? pkg.database_included_ar : pkg.database_included_en}</span>
                     </div>
                   </div>
 
                   <ul className="mt-6 space-y-3">
                     {(lang === 'ar' ? pkg.features_ar : pkg.features_en).map((feat, idx) => (
-                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                      <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium">
                         <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </li>
@@ -349,7 +349,7 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   <span className="text-xs font-bold px-3 py-1.5 rounded-lg bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/40">
                     {lang === 'ar' ? pkg.badge_ar : pkg.badge_en}
                   </span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
                     {pkg.billing_period}
                   </span>
                 </div>
@@ -358,28 +358,28 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   {lang === 'ar' ? pkg.name_ar : pkg.name_en}
                 </h3>
 
-                <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p className="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                   {lang === 'ar' ? pkg.description_ar : pkg.description_en}
                 </p>
 
                 <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 flex items-baseline gap-3">
-                  <span className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">
+                  <span className="text-xs uppercase font-bold text-slate-600 dark:text-slate-400">
                     {isRtl ? "يبدأ من:" : "Starts from:"}
                   </span>
                   <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
                     {pkg.price_egp.toLocaleString()}
                   </span>
-                  <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
+                  <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
                     {t.pricing.currency}
                   </span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
                     (~${pkg.price_usd})
                   </span>
                 </div>
 
                 <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   {(lang === 'ar' ? pkg.features_ar : pkg.features_en).map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800">
+                    <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium p-3 rounded-xl bg-slate-100/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800">
                       <Check className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </div>
