@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   X, 
@@ -7,392 +7,240 @@ import {
   Volume2, 
   VolumeX, 
   Sparkles, 
-  CheckCircle2, 
-  Monitor, 
-  Smartphone, 
-  Database, 
-  ShieldCheck, 
-  ArrowRight,
-  Mic,
-  MessageSquare
+  MessageCircle,
+  Maximize,
+  RotateCcw
 } from 'lucide-react';
 import logoImg from '../assets/logo.jpeg';
 
 export const PromoVideoModal = ({ isOpen, onClose }) => {
-  const { t, isRtl } = useLanguage();
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [activeScene, setActiveScene] = useState(0);
-  const [isMuted, setIsMuted] = useState(false); // Default unmuted so client hears Egyptian voiceover
-  const [progress, setProgress] = useState(0);
-  const audioCtxRef = useRef(null);
+  const { isRtl, lang } = useLanguage();
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
 
-  const scenes = [
-    {
-      id: 0,
-      badge: "المرحلة الأولى • الفكرة والتصميم",
-      badgeEn: "Phase 1 • Vision & UI/UX Design",
-      titleAr: "تصميم واجهات تسحر الأنظار وتضاعف تفاعل عملائك",
-      titleEn: "Breathtaking UI/UX Crafted for Maximum Conversion",
-      descAr: "نبدأ بدراسة هوية شركتك وتحويلها إلى واجهات تفاعلية أنيقة تجمع بين أحدث صيحات التصميم والسرعة الفائقة.",
-      descEn: "We translate your brand vision into responsive, ultra-fast interfaces optimized for seamless interaction.",
-      egyptianVoiceScript: "أهلاً بيك في تيكفيكسا! فكرتك مش هتفضل مجرد فكرة.. بنحولها لمنصة ويب عصرية وتطبيق يكسر الدنيا ويزود مبيعاتك!",
-      icon: Monitor,
-      accent: "from-cyan-500 to-blue-600",
-      codeSnippet: `const platform = new TecvexaSite({\n  brand: 'TECVEXA',\n  ui: 'Modern UI/UX',\n  speed: 'Ultra Fast',\n  status: 'Ready to Launch'\n});`
-    },
-    {
-      id: 1,
-      badge: "المرحلة الثانية • القوة والتحكم",
-      badgeEn: "Phase 2 • Engine & Live Admin Panel",
-      titleAr: "لوحة تحكم ذكية وقاعدة بيانات سحابية بين يديك",
-      titleEn: "Intelligent Custom Dashboard & Real-Time Cloud DB",
-      descAr: "تحكم في كل تفصيلة: أسعار، منتجات، عروض، وموظفين بضغطة زرار واحدة ومن أي مكان.",
-      descEn: "Govern your entire enterprise: update prices, projects, inventory, and metrics from any browser.",
-      egyptianVoiceScript: "لوحة تحكم ذكية بين إيديك.. تتحكم في كل تفصيلة في شغلك: منتجات، أسعار، وموظفين بضغطة زرار واحدة ومن أي مكان!",
-      icon: Database,
-      accent: "from-emerald-500 to-teal-600",
-      codeSnippet: `// Live Sync with Supabase Cloud DB\nawait supabase.from('services')\n  .update({ active: true })\n  .eq('status', 'online');\nconsole.log('Synchronized in 10ms!');`
-    },
-    {
-      id: 2,
-      badge: "المرحلة الثالثة • الويب + تطبيق الأندرويد",
-      badgeEn: "Phase 3 • Cross-Platform Ecosystem",
-      titleAr: "تزامن فوري بين موقعك وتطبيق الأندرويد",
-      titleEn: "Instant Synchronization Between Web & Android App",
-      descAr: "بيانات موحدة وقاعدة بيانات واحدة: أي تعديل في الموقع يظهر فوراً في هواتف عملائك على تطبيق الأندرويد.",
-      descEn: "A single unified cloud backend: edits on the web dashboard reflect instantly inside your Android app.",
-      egyptianVoiceScript: "موقعك وتطبيق الأندرويد شغالين مع بعض زي الساعة.. قاعدة بيانات واحدة وأي تعديل هنا يسمّع هناك في ثانية!",
-      icon: Smartphone,
-      accent: "from-indigo-500 to-purple-600",
-      codeSnippet: `// Unified Push Notification Pipeline\nawait AndroidNotificationService.broadcast({\n  title: 'عرض جديد من TECVEXA!',\n  badge: 'Live Sync Active'\n});`
-    },
-    {
-      id: 3,
-      badge: "المرحلة الرابعة • الأمان والريادة",
-      badgeEn: "Phase 4 • Cloud Security & Growth",
-      titleAr: "سيرفرات سحابية فائقة السرعة وضمان تشغيل 99.9%",
-      titleEn: "Hardened Enterprise Security & 99.9% Uptime SLA",
-      descAr: "أمان متقدم، حماية ضد الاختراق، ونسخ احتياطي يومي يضمن راحة بالك ونمو أعمالك بلا توقف.",
-      descEn: "SSL encryption, automated backups, and dedicated SLA support keeping your enterprise operating 24/7.",
-      egyptianVoiceScript: "سرعة خارقة وأمان ملوش مثيل.. خوادم سحابية شغالة 24 ساعة بدون انقطاع، ودعم فني جنبك خطوة بخطوة. كلمنا دلوقتي وخلينا نبدأ!",
-      icon: ShieldCheck,
-      accent: "from-amber-500 to-orange-600",
-      codeSnippet: `// Security & Cloud Uptime Radar\nconst securityRadar = {\n  uptime: '99.98%',\n  ssl: 'Active TLS 1.3',\n  backup: 'Daily Cloud Vault'\n};`
-    }
-  ];
-
-  // Speak narration in Egyptian Arabic using Web Speech API
-  const speakSceneNarration = (sceneIndex) => {
-    if (isMuted || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
-    
-    try {
-      window.speechSynthesis.cancel(); // Stop prior narration
-
-      const scene = scenes[sceneIndex];
-      const textToSpeak = scene.egyptianVoiceScript;
-
-      const utterance = new SpeechSynthesisUtterance(textToSpeak);
-      utterance.rate = 0.98;
-      utterance.pitch = 1.05;
-
-      // Find Arabic Egyptian voice or any Arabic voice
-      const voices = window.speechSynthesis.getVoices();
-      const arabicVoice = voices.find(v => v.lang === 'ar-EG' || v.lang === 'ar_EG') ||
-                          voices.find(v => v.lang.startsWith('ar'));
-      if (arabicVoice) {
-        utterance.voice = arabicVoice;
-        utterance.lang = arabicVoice.lang;
-      } else {
-        utterance.lang = 'ar-EG';
-      }
-
-      window.speechSynthesis.speak(utterance);
-    } catch (e) {
-      console.warn('Speech synthesis notice:', e);
-    }
-  };
-
-  // Play subtle chime
-  const playTechTone = (freq = 440) => {
-    if (isMuted) return;
-    try {
-      if (!audioCtxRef.current) {
-        audioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      const ctx = audioCtxRef.current;
-      if (ctx.state === 'suspended') ctx.resume();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-      gain.gain.setValueAtTime(0.03, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.25);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.25);
-    } catch (e) {}
-  };
-
-  // Trigger speech when modal opens or scene changes
   useEffect(() => {
-    if (isOpen && isPlaying && !isMuted) {
-      speakSceneNarration(activeScene);
-    } else if (!isOpen || isMuted) {
-      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
-    }
-  }, [isOpen, activeScene, isMuted]);
-
-  // Video Reel timer logic
-  useEffect(() => {
-    if (!isOpen || !isPlaying) return;
-
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          setActiveScene(curr => {
-            const next = (curr + 1) % scenes.length;
-            playTechTone(380 + next * 100);
-            return next;
-          });
-          return 0;
-        }
-        return prev + 1.25;
+    if (isOpen && videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch((err) => {
+        console.log("Autoplay prevented:", err);
+        setIsPlaying(false);
       });
-    }, 100);
-
-    return () => clearInterval(interval);
-  }, [isOpen, isPlaying]);
-
-  // Handle modal close
-  const handleClose = () => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
+    } else if (!isOpen && videoRef.current) {
+      videoRef.current.pause();
+      setIsPlaying(false);
     }
-    onClose();
-  };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
-  const current = scenes[activeScene];
-  const CurrentIcon = current.icon;
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !videoRef.current.muted;
+    setIsMuted(videoRef.current.muted);
+  };
+
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  const handleSeek = (e) => {
+    const time = parseFloat(e.target.value);
+    if (videoRef.current) {
+      videoRef.current.currentTime = time;
+      setCurrentTime(time);
+    }
+  };
+
+  const handleRestart = () => {
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const handleFullscreen = () => {
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      } else if (videoRef.current.webkitRequestFullscreen) {
+        videoRef.current.webkitRequestFullscreen();
+      }
+    }
+  };
+
+  const formatTime = (timeInSeconds) => {
+    if (isNaN(timeInSeconds)) return "00:00";
+    const mins = Math.floor(timeInSeconds / 60);
+    const secs = Math.floor(timeInSeconds % 60);
+    return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  };
+
+  const handleWhatsAppContact = () => {
+    const msg = encodeURIComponent(
+      lang === 'ar'
+        ? "مرحباً TECVEXA، شاهدت الفيديو التعريفي وأرغب في مناقشة وبدء مشروعي معكم!"
+        : "Hello TECVEXA, I watched your promo reel and I would like to discuss launching my project with you!"
+    );
+    window.open(`https://wa.me/201208794479?text=${msg}`, '_blank');
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/90 backdrop-blur-2xl animate-fade-in">
-      <div className="relative w-full max-w-5xl rounded-2xl sm:rounded-3xl bg-slate-900 border border-slate-700/80 shadow-2xl shadow-cyan-500/20 overflow-hidden flex flex-col max-h-[94vh]">
-        
-        {/* Top Header Bar */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800 bg-slate-950/80">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fade-in">
+      {/* Background click to close */}
+      <div className="absolute inset-0" onClick={onClose}></div>
+
+      {/* Modal Container */}
+      <div 
+        className="relative z-10 w-full max-w-4xl bg-slate-900 border border-cyan-500/30 rounded-3xl overflow-hidden shadow-2xl shadow-cyan-500/20 flex flex-col max-h-[92vh]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Modal Top Bar */}
+        <div className="flex items-center justify-between px-5 py-3.5 bg-slate-950/80 border-b border-slate-800">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl overflow-hidden p-0.5 bg-gradient-to-tr from-cyan-500 to-emerald-400">
-              <img src={logoImg} alt="TECVEXA" className="w-full h-full object-cover rounded-[10px]" />
-            </div>
+            <img src={logoImg} alt="TECVEXA" className="w-8 h-8 rounded-lg object-cover border border-cyan-500/40" />
             <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold text-white">
-                  {t.promo.modalTitle}
-                </h3>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
-                  <Mic className="w-3 h-3 text-emerald-400 animate-pulse" />
-                  <span>صوت باللهجة المصرية</span>
-                </span>
-              </div>
-              <p className="text-xs text-slate-400">
-                {t.promo.subtitle}
+              <h4 className="text-sm sm:text-base font-black text-white flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-cyan-400" />
+                <span>{lang === 'ar' ? 'فيديو TECVEXA التعريفي' : 'TECVEXA Official Promo Reel'}</span>
+              </h4>
+              <p className="text-[11px] text-slate-400">
+                {lang === 'ar' ? 'شاهد كيف نحول فكرتك إلى منصة وتطبيق ناجح' : 'See how we turn your vision into digital success'}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => {
-                const nextMuted = !isMuted;
-                setIsMuted(nextMuted);
-                if (!nextMuted) {
-                  speakSceneNarration(activeScene);
-                } else {
-                  window.speechSynthesis?.cancel();
-                }
-              }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 transition-all"
-              title={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
-            >
-              {isMuted ? (
-                <>
-                  <VolumeX className="w-4 h-4 text-slate-400" />
-                  <span className="hidden sm:inline text-[11px]">صوت مكتوم</span>
-                </>
-              ) : (
-                <>
-                  <Volume2 className="w-4 h-4 text-emerald-400 animate-pulse" />
-                  <span className="hidden sm:inline text-[11px] text-emerald-300">الصوت شغال</span>
-                </>
-              )}
-            </button>
-
-            <button
-              onClick={handleClose}
-              className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-all"
-              title="Close"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+          <button
+            onClick={onClose}
+            className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all cursor-pointer"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
-        {/* Video Canvas Showcase Screen */}
-        <div className="relative flex-1 min-h-[320px] sm:min-h-[440px] bg-slate-950 overflow-y-auto sm:overflow-hidden flex flex-col justify-between p-4 sm:p-8 lg:p-10">
-          
-          {/* Animated Background Mesh & Particles */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(6,182,212,0.18),rgba(255,255,255,0))] pointer-events-none"></div>
-          <div className="absolute -top-32 -left-32 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-          <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+        {/* Video Player Wrapper */}
+        <div className="relative bg-black flex items-center justify-center overflow-hidden aspect-video">
+          <video
+            ref={videoRef}
+            src="./vedio.mp4"
+            className="w-full h-full object-contain cursor-pointer"
+            onClick={togglePlay}
+            onTimeUpdate={handleTimeUpdate}
+            onLoadedMetadata={handleLoadedMetadata}
+            onEnded={() => setIsPlaying(false)}
+            playsInline
+          />
 
-          {/* Scene Header & Badge */}
-          <div className="relative z-10 flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 mb-2 sm:mb-0">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-slate-800/90 border border-slate-700 text-cyan-300">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span>{isRtl ? current.badge : current.badgeEn}</span>
-            </div>
-            
-            <div className="flex items-center gap-2 px-2.5 sm:px-3 py-1 rounded-md bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold">
-              <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-              <span>4K PROMO REEL • مصري</span>
-            </div>
-          </div>
+          {/* Big Play Button Overlay when paused */}
+          {!isPlaying && (
+            <button
+              onClick={togglePlay}
+              className="absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-cyan-500/90 hover:bg-cyan-400 text-slate-950 flex items-center justify-center shadow-xl shadow-cyan-500/40 transition-transform hover:scale-110 active:scale-95 z-20 cursor-pointer"
+            >
+              <Play className="w-8 h-8 sm:w-10 sm:h-10 ml-1 fill-current" />
+            </button>
+          )}
 
-          {/* Dynamic Interactive Stage per Scene */}
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center my-auto py-2">
-            
-            {/* Left Narrative Content */}
-            <div className="lg:col-span-7 space-y-3 sm:space-y-4">
-              <div className="inline-flex p-2.5 sm:p-3 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 shadow-xl">
-                <CurrentIcon className="w-6 h-6 sm:w-8 sm:h-8 text-cyan-400" />
-              </div>
+          {/* Bottom Floating Video Controls */}
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent p-3 sm:p-4 flex flex-col gap-2 z-20">
+            {/* Progress Bar */}
+            <input
+              type="range"
+              min="0"
+              max={duration || 100}
+              value={currentTime}
+              onChange={handleSeek}
+              className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+            />
 
-              <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-white leading-tight">
-                {isRtl ? current.titleAr : current.titleEn}
-              </h2>
-
-              <p className="text-xs sm:text-base text-slate-300 max-w-xl leading-relaxed">
-                {isRtl ? current.descAr : current.descEn}
-              </p>
-
-              {/* Egyptian Arabic Dialect Speech Bubble / Subtitle */}
-              <div className="p-3.5 sm:p-4 rounded-2xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 shadow-xl flex items-start gap-2.5 sm:gap-3">
-                <div className="p-1.5 sm:p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0 mt-0.5">
-                  <Mic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </div>
-                <div>
-                  <span className="text-[10px] sm:text-[11px] font-bold text-emerald-400 uppercase block mb-1">
-                    🎙️ التعليق الصوتي المصري المسموع:
-                  </span>
-                  <p className="text-xs sm:text-sm font-semibold text-white leading-relaxed">
-                    "{current.egyptianVoiceScript}"
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Screen: Animated Code / Visualizer */}
-            <div className="lg:col-span-5 hidden sm:block">
-              <div className="rounded-2xl bg-slate-950/90 border border-slate-800 shadow-2xl p-4 overflow-hidden relative">
-                
-                <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-red-500/80"></span>
-                    <span className="w-3 h-3 rounded-full bg-amber-500/80"></span>
-                    <span className="w-3 h-3 rounded-full bg-emerald-500/80"></span>
-                  </div>
-                  <span className="text-[11px] font-mono text-slate-400">
-                    tecvexa-promo-demo.ts
-                  </span>
-                </div>
-
-                <pre className="text-xs font-mono text-cyan-300 leading-relaxed overflow-x-auto p-2 bg-slate-900/60 rounded-lg">
-                  <code>{current.codeSnippet}</code>
-                </pre>
-
-                {/* Live Activity Metric Card */}
-                <div className="mt-3 p-3 rounded-xl bg-slate-900/90 border border-slate-800/80 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
-                    <span className="text-xs font-medium text-slate-300">
-                      {isRtl ? "معدل سرعة التطبيق" : "Engine Response"}
-                    </span>
-                  </div>
-                  <span className="text-xs font-black text-emerald-400 font-mono">
-                    ⚡ 0.04s Ultra Fast
-                  </span>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
-          {/* Video Timeline & Scene Controls */}
-          <div className="relative z-10 pt-4 border-t border-slate-800/80">
-            {/* Progress line */}
-            <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-3">
-              <div 
-                className="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-100 ease-linear"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between text-xs text-white">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="p-2 rounded-xl bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 border border-cyan-500/30 transition-all"
-                  title={isPlaying ? "Pause" : "Play"}
+                  onClick={togglePlay}
+                  className="p-1.5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                  title={isPlaying ? "إيقاف مؤقت" : "تشغيل"}
                 >
-                  {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                  {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                 </button>
 
-                <div className="flex items-center gap-1 bg-slate-900/90 p-1 rounded-xl border border-slate-800">
-                  {scenes.map((s, idx) => (
-                    <button
-                      key={s.id}
-                      onClick={() => {
-                        setActiveScene(idx);
-                        setProgress(0);
-                        playTechTone(380 + idx * 100);
-                        speakSceneNarration(idx);
-                      }}
-                      className={`px-3 py-1 text-xs font-bold rounded-lg transition-all ${
-                        activeScene === idx 
-                          ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md' 
-                          : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                      }`}
-                    >
-                      {idx + 1}
-                    </button>
-                  ))}
-                </div>
+                <button
+                  onClick={handleRestart}
+                  className="p-1.5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                  title="إعادة التشغيل"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                </button>
+
+                <button
+                  onClick={toggleMute}
+                  className="p-1.5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                  title={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
+                >
+                  {isMuted ? <VolumeX className="w-5 h-5 text-red-400" /> : <Volume2 className="w-5 h-5" />}
+                </button>
+
+                <span className="font-mono text-[11px] text-slate-300">
+                  {formatTime(currentTime)} / {formatTime(duration)}
+                </span>
               </div>
 
-              {/* Action Call to WhatsApp */}
-              <a
-                href="https://wa.me/201208794479?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20TECVEXA%D8%8C%20%D8%B4%D8%A7%D9%87%D8%AF%D8%AA%20%D8%A7%D9%84%D9%81%D9%8A%D8%AF%D9%8A%D9%88%20%D8%A7%D9%84%D8%AF%D8%B9%D8%A7%D8%A6%D9%8A%20%D9%88%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A8%D8%AF%D8%A1%20%D9%81%D9%8A%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9%D9%8A%20%D9%85%D8%B9%D9%83%D9%85"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => window.speechSynthesis?.cancel()}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 hover:from-emerald-400 hover:to-teal-400 shadow-lg shadow-emerald-500/20 transition-all hover:scale-105"
-              >
-                <span>{t.promo.ctaAction}</span>
-                <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
-              </a>
-
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleFullscreen}
+                  className="p-1.5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                  title="ملء الشاشة"
+                >
+                  <Maximize className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
-
         </div>
 
+        {/* Modal Bottom Action Bar */}
+        <div className="px-5 py-4 bg-slate-950 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="text-center sm:text-start">
+            <p className="text-xs sm:text-sm font-bold text-white">
+              {lang === 'ar' ? 'مستعد لتحويل مشروعك إلى واقع رقمي متفوق؟' : 'Ready to turn your project into digital reality?'}
+            </p>
+            <p className="text-[11px] text-slate-400">
+              {lang === 'ar' ? 'فريق TECVEXA مستعد للتصميم والبرمجة والتسليم بأعلى المعايير العالمية.' : 'TECVEXA engineers are ready to build and deliver your platform.'}
+            </p>
+          </div>
+
+          <button
+            onClick={handleWhatsAppContact}
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0"
+          >
+            <MessageCircle className="w-4 h-4 text-slate-950" />
+            <span>{lang === 'ar' ? 'ابدأ مشروعك معنا عبر واتساب' : 'Start Your Project on WhatsApp'}</span>
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -12,9 +12,8 @@ import {
   Smartphone, 
   ShieldCheck, 
   Layers, 
-  Calculator,
-  MessageCircle,
-  Clock
+  Sliders,
+  MessageCircle
 } from 'lucide-react';
 
 export const ServicesPricing = ({ onSelectPackage }) => {
@@ -22,7 +21,7 @@ export const ServicesPricing = ({ onSelectPackage }) => {
   const [packages, setPackages] = useState([]);
   const [activeTab, setActiveTab] = useState('website_tier');
 
-  // Interactive Calculator State
+  // Interactive Project Scope Builder State
   const [calcWeb, setCalcWeb] = useState(true);
   const [calcAndroid, setCalcAndroid] = useState(false);
   const [calcPaidDomain, setCalcPaidDomain] = useState(true);
@@ -43,44 +42,38 @@ export const ServicesPricing = ({ onSelectPackage }) => {
   const bundleOffers = packages.filter(p => p.category === 'bundle');
   const bespokeSystems = packages.filter(p => p.category === 'bespoke');
 
-  // Calculate live estimate in EGP
-  const calculateTotal = () => {
-    let total = 0;
-    if (calcWeb) total += 3500;
-    if (calcAndroid) {
-      // If web is also selected, apply combo discount
-      total += calcWeb ? 9000 : 7500;
-    }
-    if (calcPaidDomain) total += 1200; // Paid .com domain 1 year
-    if (calcPaidHosting) total += 2200; // Dedicated high-speed cloud host
-    if (calcPaidDb) total += 1900; // Dedicated production cloud DB
-    return total;
-  };
-
-  const calculatedTotal = calculateTotal();
-
-  const handleOrderCalculatedWhatsApp = () => {
+  // Build list of selected specifications for WhatsApp request
+  const getSelectedModules = () => {
     const items = [];
     if (calcWeb) items.push(lang === 'ar' ? 'موقع ويب ديناميكي مع لوحة تحكم' : 'Dynamic Website with Admin Dashboard');
-    if (calcAndroid) items.push(lang === 'ar' ? 'تطبيق أندرويد متزامن' : 'Synchronized Android App');
-    if (calcPaidDomain) items.push(lang === 'ar' ? 'دومين مدفوع .com لسنة' : 'Paid .com Domain for 1 yr');
-    if (calcPaidHosting) items.push(lang === 'ar' ? 'استضافة سحابية فائقة السرعة مدفوعة' : 'Paid High-Speed Cloud Host');
-    if (calcPaidDb) items.push(lang === 'ar' ? 'قاعدة بيانات سحابية مدفوعة' : 'Paid Cloud Database');
+    if (calcAndroid) items.push(lang === 'ar' ? 'تطبيق أندرويد متزامن' : 'Synchronized Android Mobile App');
+    if (calcPaidDomain) items.push(lang === 'ar' ? 'دومين رسمي مخصص (.com)' : 'Custom Official Domain (.com)');
+    if (calcPaidHosting) items.push(lang === 'ar' ? 'استضافة سحابية فائقة السرعة' : 'High-Speed Cloud Hosting Server');
+    if (calcPaidDb) items.push(lang === 'ar' ? 'قاعدة بيانات سحابية متقدمة' : 'Production Cloud Database Engine');
+    return items;
+  };
 
+  const handleOrderCalculatedWhatsApp = () => {
+    const items = getSelectedModules();
     const msg = encodeURIComponent(
-      `مرحباً شركة TECVEXA،\nقمت بحساب تكلفة مشروعي عبر حاسبة الموقع:\n- المكونات: ${items.join(' + ')}\n- التكلفة التقديرية: ${calculatedTotal.toLocaleString()} ج.م\nأرغب في بدء التنفيذ وتحديد موعد للبدء.`
+      lang === 'ar'
+        ? `مرحباً شركة TECVEXA،\nقمت بتحديد مواصفات مشروعي عبر الموقع:\n- المكونات المطلوبة:\n• ${items.join('\n• ')}\n\nأرغب في الحصول على عرض السعر المناسب وتحديد موعد للبدء في التنفيذ.`
+        : `Hello TECVEXA,\nI configured my desired project specifications:\n- Requirements:\n• ${items.join('\n• ')}\n\nI would like to receive a tailored quotation to get started.`
     );
     window.open(`https://wa.me/201208794479?text=${msg}`, '_blank');
   };
 
   const handlePackageWhatsApp = (pkg) => {
     const name = lang === 'ar' ? pkg.name_ar : pkg.name_en;
-    const price = `${pkg.price_egp.toLocaleString()} ج.م / $${pkg.price_usd}`;
     const msg = encodeURIComponent(
-      `مرحباً TECVEXA،\nأرغب في حجز واختيار:\nالباقة: ${name}\nالسعر: ${price}\nبرجاء موافاتي بالخطوات المطلوبة لبدء العمل.`
+      lang === 'ar'
+        ? `مرحباً TECVEXA،\nأرغب في الاستفسار عن باقة: ${name}\nومعرفة تفاصيل وخيارات التسعير الأنسب لمتطلبات مشروعي.\nبرجاء موافاتي بالتفاصيل والخطوات للبدء.`
+        : `Hello TECVEXA,\nI would like to inquire about the plan: ${name}\nand receive a custom quote tailored to my project requirements.\nPlease let me know the next steps to start.`
     );
     window.open(`https://wa.me/201208794479?text=${msg}`, '_blank');
   };
+
+  const selectedModules = getSelectedModules();
 
   return (
     <section id="services" className="relative py-20 lg:py-28 bg-slate-100/60 dark:bg-slate-950/60 border-t border-slate-200 dark:border-slate-800/80 transition-colors duration-300">
@@ -94,46 +87,51 @@ export const ServicesPricing = ({ onSelectPackage }) => {
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 text-cyan-700 dark:text-cyan-400 text-xs sm:text-sm font-bold mb-4 shadow-sm">
             <Sparkles className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
-            <span>{t.pricing.sectionBadge}</span>
+            <span>{lang === 'ar' ? 'خدمات وحلول TECVEXA المتكاملة' : 'TECVEXA Digital Solutions & Plans'}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
-            {t.pricing.title}
+            {lang === 'ar' ? 'اختر الباقة المناسبة لطموح مشروعك' : 'Select the Ideal Plan for Your Ambition'}
           </h2>
-          <p className="mt-4 text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
-            {t.pricing.subtitle}
+          <p className="mt-4 text-slate-700 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-medium">
+            {lang === 'ar' 
+              ? 'نقدم حلولاً برمجية مرنة ومخصصة بالكامل. تواصل معنا لتحديد العرض الأنسب والأكثر توفيراً لمتطلبات عملك.'
+              : 'Tailored dynamic platforms engineered for scale. Contact our team to receive a custom quotation best suited for your goals.'}
           </p>
 
           {/* Navigation Category Tabs */}
-          <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-slate-200 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 shadow-md max-w-full overflow-x-auto">
+          <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg max-w-full overflow-x-auto gap-1.5">
             <button
               onClick={() => setActiveTab('website_tier')}
-              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all ${
+              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all flex items-center gap-2 ${
                 activeTab === 'website_tier'
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/20'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-slate-800'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
-              {t.pricing.tabWebTiers}
+              <Globe className="w-4 h-4" />
+              <span>{lang === 'ar' ? 'المواقع الديناميكية' : 'Dynamic Websites'}</span>
             </button>
             <button
               onClick={() => setActiveTab('bundle')}
-              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all ${
+              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all flex items-center gap-2 ${
                 activeTab === 'bundle'
                   ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/20'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-slate-800'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
-              {t.pricing.tabBundles}
+              <Zap className="w-4 h-4" />
+              <span>{lang === 'ar' ? 'باقات العروض الخاصة (Combo)' : 'Special Bundles (Combo)'}</span>
             </button>
             <button
               onClick={() => setActiveTab('bespoke')}
-              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all ${
+              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap transition-all flex items-center gap-2 ${
                 activeTab === 'bespoke'
                   ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-lg shadow-purple-500/20'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-slate-800'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
               }`}
             >
-              {t.pricing.tabBespoke}
+              <Layers className="w-4 h-4" />
+              <span>{lang === 'ar' ? 'الأنظمة المخصصة (Bespoke)' : 'Bespoke Enterprise'}</span>
             </button>
           </div>
         </div>
@@ -162,7 +160,7 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                     <span className="text-xs font-bold px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/80 text-cyan-700 dark:text-cyan-300 border border-slate-200 dark:border-slate-700/60">
                       {lang === 'ar' ? pkg.badge_ar : pkg.badge_en}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
                       {pkg.billing_period}
                     </span>
                   </div>
@@ -175,19 +173,19 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                     {lang === 'ar' ? pkg.description_ar : pkg.description_en}
                   </p>
 
-                  {/* Price Tag */}
-                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800">
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-                        {pkg.price_egp.toLocaleString()}
+                  {/* Pricing Callout without rigid numbers */}
+                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
+                    <div>
+                      <span className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400 block">
+                        {lang === 'ar' ? 'خطة التسعير:' : 'Pricing:'}
                       </span>
-                      <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
-                        {t.pricing.currency}
-                      </span>
-                      <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
-                        (~${pkg.price_usd})
+                      <span className="text-base sm:text-lg font-black text-cyan-600 dark:text-cyan-400">
+                        {lang === 'ar' ? 'حسب متطلبات مشروعك' : 'Custom Quote on Request'}
                       </span>
                     </div>
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 shrink-0">
+                      {lang === 'ar' ? 'مرونة في الدفع' : 'Flexible Terms'}
+                    </span>
                   </div>
 
                   {/* Highlights Grid (Domain, Host, DB, Dashboard) */}
@@ -243,14 +241,14 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                 <div className="mt-8 pt-4">
                   <button
                     onClick={() => handlePackageWhatsApp(pkg)}
-                    className={`w-full py-3.5 px-4 rounded-xl text-sm font-extrabold transition-all flex items-center justify-center gap-2 shadow-lg ${
+                    className={`w-full py-3.5 px-4 rounded-xl text-sm font-extrabold transition-all flex items-center justify-center gap-2 shadow-lg cursor-pointer ${
                       pkg.is_popular
                         ? 'bg-gradient-to-r from-cyan-400 to-emerald-400 text-slate-950 hover:from-cyan-300 hover:to-emerald-300 shadow-cyan-500/25 hover:scale-105 active:scale-95'
                         : 'bg-slate-900 hover:bg-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 text-white border border-slate-700/60 active:scale-95'
                     }`}
                   >
                     <MessageCircle className="w-4 h-4" />
-                    <span>{t.pricing.choosePlan}</span>
+                    <span>{lang === 'ar' ? 'طلب عرض سعر للباقة' : 'Request Package Quote'}</span>
                     <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
                   </button>
                 </div>
@@ -273,7 +271,7 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                     <span className="text-xs font-bold px-3 py-1 rounded-lg bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
                       {lang === 'ar' ? pkg.badge_ar : pkg.badge_en}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                    <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
                       {pkg.billing_period}
                     </span>
                   </div>
@@ -286,15 +284,18 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                     {lang === 'ar' ? pkg.description_ar : pkg.description_en}
                   </p>
 
-                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 flex items-baseline gap-2">
-                    <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-                      {pkg.price_egp.toLocaleString()}
-                    </span>
-                    <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
-                      {t.pricing.currency}
-                    </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
-                      (~${pkg.price_usd})
+                  {/* Pricing Callout */}
+                  <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-2">
+                    <div>
+                      <span className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400 block">
+                        {lang === 'ar' ? 'عرض السعر:' : 'Bundle Offer:'}
+                      </span>
+                      <span className="text-base sm:text-lg font-black text-emerald-600 dark:text-emerald-400">
+                        {lang === 'ar' ? 'سعر خاص ومخفض للباقة المجمعة' : 'Special Discounted Bundle Quote'}
+                      </span>
+                    </div>
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 shrink-0">
+                      {lang === 'ar' ? 'توفير حتى 35%' : 'Save up to 35%'}
                     </span>
                   </div>
 
@@ -325,10 +326,10 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                 <div className="mt-8 pt-4">
                   <button
                     onClick={() => handlePackageWhatsApp(pkg)}
-                    className="w-full py-3.5 px-4 rounded-xl text-sm font-extrabold bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 hover:from-emerald-300 hover:to-teal-300 transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95"
+                    className="w-full py-3.5 px-4 rounded-xl text-sm font-extrabold bg-gradient-to-r from-emerald-400 to-teal-400 text-slate-950 hover:from-emerald-300 hover:to-teal-300 transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 cursor-pointer"
                   >
                     <MessageCircle className="w-4 h-4" />
-                    <span>{t.pricing.choosePlan}</span>
+                    <span>{lang === 'ar' ? 'طلب عرض سعر للعرض المجمع' : 'Inquire Bundle Pricing'}</span>
                     <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? 'rotate-180' : ''}`} />
                   </button>
                 </div>
@@ -362,18 +363,18 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   {lang === 'ar' ? pkg.description_ar : pkg.description_en}
                 </p>
 
-                <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 flex items-baseline gap-3">
-                  <span className="text-xs uppercase font-bold text-slate-600 dark:text-slate-400">
-                    {isRtl ? "يبدأ من:" : "Starts from:"}
-                  </span>
-                  <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white">
-                    {pkg.price_egp.toLocaleString()}
-                  </span>
-                  <span className="text-sm font-bold text-slate-600 dark:text-slate-400">
-                    {t.pricing.currency}
-                  </span>
-                  <span className="text-xs text-slate-500 dark:text-slate-400 font-mono font-bold">
-                    (~${pkg.price_usd})
+                {/* Pricing Callout */}
+                <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400 block">
+                      {lang === 'ar' ? 'تقدير التكلفة:' : 'Cost Estimation:'}
+                    </span>
+                    <span className="text-base sm:text-xl font-black text-purple-600 dark:text-purple-400">
+                      {lang === 'ar' ? 'دراسة مخصصة دقيقة وفق حجم مؤسستك' : 'Tailored Scope for Enterprise Architecture'}
+                    </span>
+                  </div>
+                  <span className="text-xs font-bold px-3 py-1 rounded-lg bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30 shrink-0">
+                    {lang === 'ar' ? 'حلول خاصة 100%' : '100% Bespoke'}
                   </span>
                 </div>
 
@@ -389,10 +390,10 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                 <div className="mt-8 pt-4">
                   <button
                     onClick={() => handlePackageWhatsApp(pkg)}
-                    className="w-full py-4 px-6 rounded-xl text-sm sm:text-base font-extrabold bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-500 text-white hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-purple-500/25 hover:scale-105 active:scale-95"
+                    className="w-full py-4 px-6 rounded-xl text-sm sm:text-base font-extrabold bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-500 text-white hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-purple-500/25 hover:scale-105 active:scale-95 cursor-pointer"
                   >
                     <MessageCircle className="w-5 h-5" />
-                    <span>{t.pricing.choosePlan}</span>
+                    <span>{lang === 'ar' ? 'طلب استشارة وتسعير المنظومة' : 'Request Architecture & Quote'}</span>
                     <ArrowRight className={`w-4 h-4 ${isRtl ? 'rotate-180' : ''}`} />
                   </button>
                 </div>
@@ -401,18 +402,20 @@ export const ServicesPricing = ({ onSelectPackage }) => {
           </div>
         )}
 
-        {/* 4. INTERACTIVE PROJECT COST CALCULATOR */}
+        {/* 4. INTERACTIVE PROJECT SCOPE BUILDER (Replaced fixed calculator) */}
         <div className="mt-14 sm:mt-16 rounded-3xl p-5 sm:p-8 md:p-10 glass-card border border-slate-200 dark:border-slate-700/80 max-w-4xl mx-auto shadow-xl relative overflow-hidden">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-xl bg-cyan-500/10 dark:bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400 shrink-0">
-              <Calculator className="w-5 h-5" />
+              <Sliders className="w-5 h-5" />
             </div>
             <div>
               <h3 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
-                {t.pricing.calculatorTitle}
+                {lang === 'ar' ? 'محدد مواصفات المشروع المخصص' : 'Custom Project Scope Builder'}
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
-                {t.pricing.calculatorDesc}
+                {lang === 'ar' 
+                  ? 'اختر المكونات البرمجية التي تحتاجها وسنقوم بإعداد أفضل عرض سعر مخصص لمشروعك فوراً'
+                  : 'Select the modules you need and we will prepare your tailor-made quote directly'}
               </p>
             </div>
           </div>
@@ -427,11 +430,11 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   type="checkbox" 
                   checked={calcWeb} 
                   onChange={(e) => setCalcWeb(e.target.checked)} 
-                  className="w-4 h-4 rounded text-cyan-500 focus:ring-0" 
+                  className="w-4 h-4 rounded text-cyan-500 focus:ring-0 cursor-pointer" 
                 />
-                <span className="text-xs sm:text-sm font-semibold">{t.pricing.optWeb}</span>
+                <span className="text-xs sm:text-sm font-semibold">{lang === 'ar' ? 'موقع ويب تفاعلي وديناميكي' : 'Dynamic Interactive Website'}</span>
               </div>
-              <span className="text-xs font-mono text-cyan-700 dark:text-cyan-300 font-bold shrink-0">+3,500 ج.م</span>
+              <span className="text-xs font-mono text-cyan-700 dark:text-cyan-300 font-bold shrink-0">{lang === 'ar' ? 'شامل لوحة التحكم' : 'Includes Admin Panel'}</span>
             </label>
 
             <label className={`p-3.5 sm:p-4 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
@@ -442,11 +445,11 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   type="checkbox" 
                   checked={calcAndroid} 
                   onChange={(e) => setCalcAndroid(e.target.checked)} 
-                  className="w-4 h-4 rounded text-emerald-500 focus:ring-0" 
+                  className="w-4 h-4 rounded text-emerald-500 focus:ring-0 cursor-pointer" 
                 />
-                <span className="text-xs sm:text-sm font-semibold">{t.pricing.optAndroid}</span>
+                <span className="text-xs sm:text-sm font-semibold">{lang === 'ar' ? 'تطبيق أندرويد للهواتف الذكية' : 'Android Mobile Application'}</span>
               </div>
-              <span className="text-xs font-mono text-emerald-700 dark:text-emerald-300 font-bold shrink-0">+9,000 ج.م</span>
+              <span className="text-xs font-mono text-emerald-700 dark:text-emerald-300 font-bold shrink-0">{lang === 'ar' ? 'تزامن مباشر' : 'Live Sync'}</span>
             </label>
 
             <label className={`p-3.5 sm:p-4 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
@@ -457,11 +460,11 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   type="checkbox" 
                   checked={calcPaidDomain} 
                   onChange={(e) => setCalcPaidDomain(e.target.checked)} 
-                  className="w-4 h-4 rounded text-blue-500 focus:ring-0" 
+                  className="w-4 h-4 rounded text-blue-500 focus:ring-0 cursor-pointer" 
                 />
-                <span className="text-xs sm:text-sm font-semibold">{t.pricing.optDomain}</span>
+                <span className="text-xs sm:text-sm font-semibold">{lang === 'ar' ? 'دومين رسمي مخصص (.com / .net)' : 'Official Domain (.com / .net)'}</span>
               </div>
-              <span className="text-xs font-mono text-blue-700 dark:text-blue-300 font-bold shrink-0">+1,200 ج.م</span>
+              <span className="text-xs font-mono text-blue-700 dark:text-blue-300 font-bold shrink-0">{lang === 'ar' ? 'باسم شركتك' : 'Brand Name'}</span>
             </label>
 
             <label className={`p-3.5 sm:p-4 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
@@ -472,11 +475,11 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   type="checkbox" 
                   checked={calcPaidHosting} 
                   onChange={(e) => setCalcPaidHosting(e.target.checked)} 
-                  className="w-4 h-4 rounded text-indigo-500 focus:ring-0" 
+                  className="w-4 h-4 rounded text-indigo-500 focus:ring-0 cursor-pointer" 
                 />
-                <span className="text-xs sm:text-sm font-semibold">{t.pricing.optPaidHost}</span>
+                <span className="text-xs sm:text-sm font-semibold">{lang === 'ar' ? 'استضافة سحابية فائقة السرعة' : 'High-Speed Cloud Hosting'}</span>
               </div>
-              <span className="text-xs font-mono text-indigo-700 dark:text-indigo-300 font-bold shrink-0">+2,200 ج.م</span>
+              <span className="text-xs font-mono text-indigo-700 dark:text-indigo-300 font-bold shrink-0">99.9% Uptime</span>
             </label>
 
             <label className={`p-3.5 sm:p-4 rounded-xl border flex items-center justify-between cursor-pointer transition-all sm:col-span-2 ${
@@ -487,37 +490,40 @@ export const ServicesPricing = ({ onSelectPackage }) => {
                   type="checkbox" 
                   checked={calcPaidDb} 
                   onChange={(e) => setCalcPaidDb(e.target.checked)} 
-                  className="w-4 h-4 rounded text-teal-500 focus:ring-0" 
+                  className="w-4 h-4 rounded text-teal-500 focus:ring-0 cursor-pointer" 
                 />
-                <span className="text-xs sm:text-sm font-semibold">{t.pricing.optDb}</span>
+                <span className="text-xs sm:text-sm font-semibold">{lang === 'ar' ? 'قاعدة بيانات سحابية متقدمة وآمنة' : 'Advanced Cloud Database Engine'}</span>
               </div>
-              <span className="text-xs font-mono text-teal-700 dark:text-teal-300 font-bold shrink-0">+1,900 ج.م</span>
+              <span className="text-xs font-mono text-teal-700 dark:text-teal-300 font-bold shrink-0">{lang === 'ar' ? 'حماية ونسخ احتياطي' : 'Protected & Backed up'}</span>
             </label>
 
           </div>
 
-          {/* Calculator Bottom Summary */}
+          {/* Builder Bottom Summary */}
           <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 shadow-sm">
             <div className="text-center sm:text-start">
               <span className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider">
-                {t.pricing.totalEstimate}
+                {lang === 'ar' ? 'ملخص المواصفات المطلوبة لمشروعك:' : 'Selected Project Scope:'}
               </span>
-              <div className="flex items-baseline justify-center sm:justify-start gap-2 mt-1">
-                <span className="text-3xl sm:text-4xl font-black text-cyan-600 dark:text-cyan-400">
-                  {calculatedTotal.toLocaleString()}
-                </span>
-                <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                  {t.pricing.currency}
-                </span>
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mt-2">
+                {selectedModules.length > 0 ? (
+                  selectedModules.map((item, idx) => (
+                    <span key={idx} className="text-[11px] sm:text-xs font-bold px-2.5 py-1 rounded-lg bg-cyan-500/10 dark:bg-cyan-500/20 text-cyan-800 dark:text-cyan-200 border border-cyan-500/30">
+                      {item}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-xs text-slate-500">{lang === 'ar' ? 'يرجى تحديد عنصر واحد على الأقل' : 'Please select at least one module'}</span>
+                )}
               </div>
             </div>
 
             <button
               onClick={handleOrderCalculatedWhatsApp}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-extrabold text-slate-950 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 shadow-lg shadow-cyan-500/25 transition-all hover:scale-105 active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-extrabold text-slate-950 bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 shadow-lg shadow-cyan-500/25 transition-all hover:scale-105 active:scale-95 shrink-0 cursor-pointer"
             >
               <MessageCircle className="w-5 h-5 text-slate-950 shrink-0" />
-              <span>{t.pricing.orderCalculated}</span>
+              <span>{lang === 'ar' ? 'طلب تسعير هذه المواصفات عبر واتساب' : 'Request Quote for Scope'}</span>
             </button>
           </div>
 

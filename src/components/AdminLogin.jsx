@@ -14,17 +14,22 @@ export const AdminLogin = ({ isOpen, onClose, onSuccess }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    const result = login(username, password);
-    setLoading(false);
+    try {
+      const result = await login(username, password);
+      setLoading(false);
 
-    if (result.success) {
-      onSuccess?.();
-    } else {
+      if (result.success) {
+        onSuccess?.();
+      } else {
+        setError(result.error || t.login.errorMsg);
+      }
+    } catch (err) {
+      setLoading(false);
       setError(t.login.errorMsg);
     }
   };

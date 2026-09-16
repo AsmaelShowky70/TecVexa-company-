@@ -11,12 +11,17 @@ import { PromoVideoModal } from './components/PromoVideoModal';
 import { AdminLogin } from './components/AdminLogin';
 import { AdminDashboard } from './components/AdminDashboard';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { recordVisitorCount } from './lib/storage';
 
 export const App = () => {
   const { isAuthenticated } = useAuth();
   const [promoOpen, setPromoOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [dashboardOpen, setDashboardOpen] = useState(false);
+
+  useEffect(() => {
+    recordVisitorCount();
+  }, []);
 
   const handleOpenAdmin = () => {
     if (isAuthenticated) {
