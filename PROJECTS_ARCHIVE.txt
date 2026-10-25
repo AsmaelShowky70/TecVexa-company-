@@ -260,21 +260,78 @@ PROJECT 10: My E-Commerce Platform
   * Live Cloud Deployment on tryasp.net
 
 ================================================================================
+PROJECT 11: Natural Snacks — Food Traceability & Manufacturing ERP
+================================================================================
+- Title: Food Traceability, Recipe Batching & Supply Chain ERP
+- Type: Enterprise Food Manufacturing ERP & Traceability System
+- Tech Stack: Laravel 11, PHP 8, Blade & Bootstrap 5, MySQL, Wasmer Cloud, QR/Barcode Engine
+- Live Demo: https://laravel-a8e1e.wasmer.app/login
+- GitHub Repository: https://github.com/AsmaelShowky70/TecVexa-company-.git
+- Image: ./projects/food_traceability_erp.jpg
+- Description (EN):
+  A mission-critical enterprise food manufacturing ERP and traceability system built with
+  Laravel. Seamlessly orchestrates raw material receiving, recipe-controlled production
+  batches, laboratory QC checks, international HACCP & ISO 22000 compliance, real-time
+  forward and backward QR/barcode traceability, automated yield/waste computations, and
+  multi-role department quick logins.
+- Description (AR):
+  منظومة صناعية سحابية متقدمة مبنية بـ Laravel لإدارة وتتبع سلاسل تصنيع الأغذية بالكامل
+  لمصانع Natural Snacks. تربط استلام المواد الخام، وأوامر الصرف للإنتاج، وتصنيع الدفعات بالوصفات
+  المعتمدة، والفحوصات المخبرية ومعايير سلامة الغذاء (HACCP & ISO 22000)، والتتبع الفوري العكسي
+  والأمامي برمز QR والباركود، مع حساب آلي لمعدلات الإنتاج والهالك وسجلات المستودعات.
+- Key Highlights:
+  * End-to-End Digital Manufacturing Workflow from Raw Materials to Retail
+  * Instant Forward & Backward Batch Traceability via QR & Barcode Engine
+  * Full ISO 22000 & HACCP International Food Safety Compliance
+  * Automated Yield & Waste Calculations with 1-Click Multi-Department Access
+  * Cloud deployment on Wasmer with secure multi-role access
+
+================================================================================
+PROJECT 12: Demo Store — Android E-Commerce & Live Admin Showcase
+================================================================================
+- Title: Interactive Android E-Commerce App & Synchronized Live Admin Showcase
+- Type: Interactive Android E-Commerce App & Live Admin Simulator
+- Tech Stack: JavaScript (ES6+), Android UI Simulator, HTML5, Modern CSS3, State Management
+- Live Demo: https://asmaelshowky70.github.io/Demo-Store/
+- GitHub Repository: https://github.com/AsmaelShowky70/Demo-Store.git
+- Image: ./projects/demo_store_showcase.jpg
+- Description (EN):
+  An innovative live interactive presentation platform simulating a high-end Android e-commerce
+  mobile application synchronized in real time with an active admin management dashboard.
+  Features instant dual-screen presentation mode, realistic Android chassis with customizable
+  colors (Carbon, Titanium, Violet), complete cart and checkout flow with toast notifications,
+  and in-memory dynamic product catalog management.
+- Description (AR):
+  منصة عرض تفاعلية مبتكرة لمحاكاة تطبيق متجر إلكتروني ذكي للهواتف بنظام أندرويد متزامن لحظياً
+  وبدقة عالية مع لوحة تحكم الإدارة (Admin Panel). تتيح التبديل السلس بين شاشة العميل وشاشة
+  الإدارة أو العرض المزدوج (Dual-Screen)، مع تجربة طلب وشراء حية، وتحديث فوري للمنتجات والأسعار
+  من لوحة التحكم، وإشعارات منبثقة، وتخصيص هيكل الهاتف وألوانه.
+- Key Highlights:
+  * Synchronized Live Dual-Screen View between Customer Store & Admin CMS
+  * Full Interactive Shopping Cart, Checkout Engine & Push Notifications
+  * Real-Time Product Catalog & Price Management from Admin Panel
+  * Realistic Android Hardware Frame with Carbon, Titanium & Violet Themes
+  * Instant browser deployment on GitHub Pages
+
+================================================================================
 QUICK REFERENCE TABLE / جدول مرجعي سريع
 ================================================================================
-#  | Project Name       | Tech Stack                      | Live Demo / Repo
----+--------------------+---------------------------------+------------------------------------------
-01 | Natural Snacks QMS | React 19, Vite, Tailwind        | https://asmaelshowky70.github.io/Quality-Control-Natural-snacks/
-02 | Natural Snacks HR  | JS ES6+, HTML5, CSS3            | https://asmaelshowky70.github.io/HR-NaturalSnaks/
-03 | CodeUp Academy     | React 19, ASP.NET Core API      | https://asmaelshowky70.github.io/CodeUp/
-04 | LingoFlow AI       | Flutter, Dart, ASP.NET API      | https://github.com/AsmaelShowky70/English-app.git
-05 | StudyAI Companion  | Web UI, AI SaaS, Computer Vision| https://asmaelshowky70.github.io/Study-Ai/
-06 | Sugo Backend API   | ASP.NET Core, EF Core, SQL Server| https://sugobackend.runasp.net/swagger
-07 | LapShop            | ASP.NET Core MVC, EF Core, SQL  | https://lapshope.runasp.net/
-08 | Health Care Clinic | HTML5, CSS3, JavaScript        | https://asmaelshowky70.github.io/health/
-09 | Sugo UI            | Flutter, Dart, Mobile App       | https://github.com/AsmaelShowky70/SugoUI.git
-10 | My E-Commerce      | ASP.NET Core MVC, SQL Server    | https://myecommerce.tryasp.net/
+#  | Project Name          | Tech Stack                      | Live Demo / Repo
+---+-----------------------+---------------------------------+------------------------------------------
+01 | Natural Snacks QMS    | React 19, Vite, Tailwind        | https://asmaelshowky70.github.io/Quality-Control-Natural-snacks/
+02 | Natural Snacks HR     | JS ES6+, HTML5, CSS3            | https://asmaelshowky70.github.io/HR-NaturalSnaks/
+03 | CodeUp Academy        | React 19, ASP.NET Core API      | https://asmaelshowky70.github.io/CodeUp/
+04 | LingoFlow AI          | Flutter, Dart, ASP.NET API      | https://github.com/AsmaelShowky70/English-app.git
+05 | StudyAI Companion     | Web UI, AI SaaS, Computer Vision| https://asmaelshowky70.github.io/Study-Ai/
+06 | Sugo Backend API      | ASP.NET Core, EF Core, SQL Server| https://sugobackend.runasp.net/swagger
+07 | LapShop               | ASP.NET Core MVC, EF Core, SQL  | https://lapshope.runasp.net/
+08 | Health Care Clinic    | HTML5, CSS3, JavaScript        | https://asmaelshowky70.github.io/health/
+09 | Sugo UI               | Flutter, Dart, Mobile App       | https://github.com/AsmaelShowky70/SugoUI.git
+10 | My E-Commerce         | ASP.NET Core MVC, SQL Server    | https://myecommerce.tryasp.net/
+11 | Food Traceability ERP | Laravel 11, PHP 8, MySQL, Wasmer| https://laravel-a8e1e.wasmer.app/login
+12 | Demo Store Showcase   | JS ES6+, Android UI Simulator   | https://asmaelshowky70.github.io/Demo-Store/
 
 ================================================================================
 End of Archive File. Ready for AI ingestion in future projects.
 ================================================================================
+

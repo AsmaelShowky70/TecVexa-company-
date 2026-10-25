@@ -280,5 +280,61 @@ export const INITIAL_PROJECTS = [
     ],
     is_featured: false,
     display_order: 10
+  },
+  {
+    id: "proj-11-food-traceability",
+    title_ar: "منظومة تتبع تصنيع وسلامة الأغذية (Food Traceability ERP)",
+    title_en: "Natural Snacks — Food Traceability & Manufacturing ERP",
+    category: "enterprise",
+    type_ar: "نظام سحابي صناعي متكامل لإدارة سلاسل الإمداد وتتبع الأغذية",
+    type_en: "Enterprise Food Manufacturing ERP & Traceability System",
+    tech_stack: ["Laravel 11", "PHP 8", "Blade & Bootstrap 5", "MySQL", "Wasmer Cloud", "QR & Barcode Engine", "HACCP & ISO 22000"],
+    live_url: "https://laravel-a8e1e.wasmer.app/login",
+    repo_url: "https://github.com/AsmaelShowky70/TecVexa-company-.git",
+    image_url: "./projects/food_traceability_erp.jpg",
+    description_ar: "منظومة صناعية سحابية متقدمة مبنية بـ Laravel لإدارة وتتبع سلاسل تصنيع الأغذية بالكامل لمصانع Natural Snacks. تربط استلام المواد الخام، وأوامر الصرف للإنتاج، وتصنيع الدفعات بالوصفات المعتمدة، والفحوصات المخبرية ومعايير سلامة الغذاء (HACCP & ISO 22000)، والتتبع الفوري العكسي والأمامي برمز QR والباركود، مع حساب آلي لمعدلات الإنتاج والهالك وسجلات المستودعات.",
+    description_en: "A mission-critical enterprise food manufacturing ERP and traceability system built with Laravel. Seamlessly orchestrates raw material receiving, recipe-controlled production batches, laboratory QC checks, international HACCP & ISO 22000 compliance, real-time forward and backward QR/barcode traceability, automated yield/waste computations, and multi-role department login.",
+    highlights_ar: [
+      "ربط رقمي كامل لجميع مراحل التصنيع من المواد الخام حتى المنتج النهائي",
+      "تتبع رقمي عكسي وأمامي ذكي للدفعات عبر رموز QR والباركود",
+      "مطابقة شاملة ودقيقة لمعايير سلامة الأغذية الدولية ISO 22000 و HACCP",
+      "حساب آلي لنسب الإنتاجية، الهالك، وأرصدة المستودع مع نظام دخول سريع للأقسام"
+    ],
+    highlights_en: [
+      "End-to-End Digital Manufacturing Workflow from Raw Materials to Retail",
+      "Instant Forward & Backward Batch Traceability via QR & Barcode Engine",
+      "Full ISO 22000 & HACCP International Food Safety Compliance",
+      "Automated Yield & Waste Calculations with 1-Click Multi-Department Access"
+    ],
+    is_featured: true,
+    display_order: 11
+  },
+  {
+    id: "proj-12-demo-store",
+    title_ar: "نموذج المتجر الإلكتروني الذكي ولوحة الإدارة الحية (Demo Store)",
+    title_en: "Demo Store — Android E-Commerce & Live Admin Showcase",
+    category: "mobile",
+    type_ar: "محاكي تفاعلي متقدم لتطبيق متجر أندرويد + لوحة تحكم الإدارة الحية",
+    type_en: "Interactive Android E-Commerce App & Live Admin Simulator",
+    tech_stack: ["JavaScript (ES6+)", "Android UI Simulator", "HTML5", "Modern CSS3", "State Management", "Dual-Screen Sync"],
+    live_url: "https://asmaelshowky70.github.io/Demo-Store/",
+    repo_url: "https://github.com/AsmaelShowky70/Demo-Store.git",
+    image_url: "./projects/demo_store_showcase.jpg",
+    description_ar: "منصة عرض تفاعلية مبتكرة لمحاكاة تطبيق متجر إلكتروني ذكي للهواتف بنظام أندرويد متزامن لحظياً وبدقة عالية مع لوحة تحكم الإدارة (Admin Panel). تتيح التبديل السلس بين شاشة العميل وشاشة الإدارة أو العرض المزدوج (Dual-Screen)، مع تجربة طلب وشراء حية، وتحديث فوري للمنتجات والأسعار من لوحة التحكم، وإشعارات منبثقة، وتخصيص هيكل الهاتف وألوانه.",
+    description_en: "An innovative live interactive presentation platform simulating a high-end Android e-commerce mobile application synchronized in real time with an active admin management dashboard. Features instant dual-screen presentation mode, realistic Android chassis with customizable colors, complete cart and checkout flow with notifications, and in-memory dynamic product catalog management.",
+    highlights_ar: [
+      "عرض مزدوج تفاعلي (Dual-Screen) متزامن بين تطبيق العميل ولوحة الأدمن",
+      "دورة شراء مكتملة مع سلة تسوق ديناميكية وتأكيد فوري للطلبات",
+      "إضافة فورية للمنتجات وتعديل الأسعار من لوحة الأدمن وانعكاسها اللحظي",
+      "محاكي أندرويد ثلاثي الأبعاد بتصاميم متعددة (أسود كربوني، تيتانيوم، بنفسجي)"
+    ],
+    highlights_en: [
+      "Synchronized Live Dual-Screen View between Customer Store & Admin CMS",
+      "Full Interactive Shopping Cart, Checkout Engine & Push Notifications",
+      "Real-Time Product Catalog & Price Management from Admin Panel",
+      "Realistic Android Hardware Frame with Carbon, Titanium & Violet Themes"
+    ],
+    is_featured: true,
+    display_order: 12
   }
 ];

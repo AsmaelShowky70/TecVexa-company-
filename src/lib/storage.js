@@ -146,7 +146,24 @@ export const getProjects = async () => {
   }
 
   const local = localStorage.getItem(STORAGE_KEYS.PROJECTS);
-  return local ? JSON.parse(local) : INITIAL_PROJECTS;
+  if (local) {
+    try {
+      const parsed = JSON.parse(local);
+      if (Array.isArray(parsed)) {
+        const existingIds = new Set(parsed.map(p => p.id));
+        const missing = INITIAL_PROJECTS.filter(p => !existingIds.has(p.id));
+        if (missing.length > 0) {
+          const merged = [...parsed, ...missing];
+          localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(merged));
+          return merged;
+        }
+        return parsed;
+      }
+    } catch (e) {
+      console.warn('Failed parsing local projects:', e);
+    }
+  }
+  return INITIAL_PROJECTS;
 };
 
 export const saveProject = async (project) => {
